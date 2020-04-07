@@ -1,0 +1,63 @@
+//Happy Mother's Day Everyone!!!//
+//If you wanna get your mom something truly from the heart,
+//all you need is an SSD1306 OLED display and any Arduino!
+//plug in the SDA and SCL pins and the screen to 5V and the
+//code is good to go. Make sure you have the included
+//libraries though, availabe at:
+//https://github.com/adafruit/Adafruit-GFX-Library
+//https://github.com/adafruit/Adafruit_SSD1306
+//This was a fun little project I made last year and decided
+//to share with yall :D I'd like something else to work ok
+//if ya got ideas. Have fun peeps!
+
+
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+#define OLED_RESET     0 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+//int pinM = 0;
+int x = 0, y = 0;
+int spd = 4;
+int txtSize = 7;
+String MESSAGE = "I LOVE YOU MOMMY";
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  Wire.begin();
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3c);
+  display.clearDisplay();
+  
+  display.setCursor(0, 0);
+  display.setTextWrap(false);
+
+  display.setTextSize(txtSize); // Draw 2X-scale text
+  display.setTextColor(SSD1306_WHITE);
+  display.println(MESSAGE);
+  display.display();
+  
+  pinMode(A0, INPUT);
+}
+
+void loop() {
+  display.clearDisplay();
+ 
+  display.setCursor(x, y);
+    
+  
+  display.setTextSize(txtSize); // Draw 2X-scale text
+  display.setTextColor(SSD1306_WHITE);
+  
+  
+  display.println(MESSAGE);
+  display.display();
+   if (String(txt).length() * 6 * txtSize > display.width())
+     x-=spd;
+   if ( x < -6*txtSize*String(txt).length()) x = display.width();
+}
